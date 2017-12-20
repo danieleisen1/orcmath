@@ -4,6 +4,8 @@ package guiPlayer;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import guiTeacher.components.TextField;
+
 
 public class CatalogMaker {
 	
@@ -23,8 +25,8 @@ public class CatalogMaker {
 		}
 		return data;
 	}
-	public void addNewItem(String description, double price) {
-		list.add(new Grocery(description, price));
+	public void addNewItem(TextField descriptionField, TextField priceField) {
+		list.add(new Grocery(descriptionField, priceField));
 		System.out.println("Item added successfully.");
 	}
 	public static void main(String[] args) {
@@ -33,15 +35,16 @@ public class CatalogMaker {
 		
 		Scanner input = new Scanner(System.in);
 		
-		while(input.nextLine() != "stop")
+		while(input.nextLine() != "stop") {
 			System.out.println("Please enter a description");
 			String description = input.nextLine();
 			System.out.println("Now enter a price.");
 			double price = input.nextInt();
 		}
-		System.out.println(x.getCsvContent());
+		System.out.println((x.getCsvContent()));
 	}
-	
-
 }
+
+
+
 
