@@ -1,24 +1,49 @@
 package myStuff.simon;
 
-import guiTeacher.GUIApplication;
-public class SimonGameDanielE extends GUIApplication {
+import java.util.ArrayList;
 
+import guiTeacher.GUIApplication;
+import guiTeacher.components.TextLabel;
+
+public class SimonGameDanielE extends GUIApplication {
+	
+	private static SimonGameDanielE game;
+	private SimonGameDanielE screen;
+
+	private TextLabel textlabel;
+	private ButtonInterfaceDanielE[] buttonInterface;
+	private ProgressInterfaceDanielE progressInterface;
+	private ArrayList<MoveInterfaceDanielE> arrayList;
+	private int roundNumber;
+	private boolean acceptingInput;
+	private int sequenceIndex;
+	private int lastSelectedButton;
 	
 	public SimonGameDanielE(int width, int height) {
-		super(width, height);
+		
+		super(width,height);
+		
 		setVisible(true);
+		// TODO Auto-generated constructor stub
 	}
+	//Write the main method
+	//Write the initScreen method
+	//Write the constructor
 
 	@Override
 	public void initScreen() {
-		SimonScreenDanielE screen = new SimonScreenDanielE(getWidth(),getHeight());
-		setScreen(screen);
-	}
 
-	public static void main(String[] args) {
-		SimonGameDanielE catalog = new SimonGameDanielE(800,550);
-		Thread runner = new Thread(catalog);
-		runner.start();
+	screen = new SimonGameDanielE(getWidth(),getHeight());
+	
 	}
+	public static void main(String args[]) {
+		game = new SimonGameDanielE(200,200);
+		Thread runner = new Thread(game);
+		runner.start();
+		
+		
+	}
+	
+	
 
 }
