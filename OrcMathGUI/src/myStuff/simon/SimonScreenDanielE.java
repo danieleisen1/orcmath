@@ -1,7 +1,12 @@
 package myStuff.simon;
 
+import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.swing.Action;
 
 import guiTeacher.components.TextLabel;
 import guiTeacher.interfaces.Visible;
@@ -24,11 +29,7 @@ public class SimonScreenDanielE extends ClickableScreen implements Runnable {
 		app.start();
 	}
 
-	@Override
-	public void run() {
-		// TODO Auto-generated method stub
 
-	}
 
 	@Override
 	public void initAllObjects(List<Visible> viewObjects) {
@@ -43,7 +44,7 @@ public class SimonScreenDanielE extends ClickableScreen implements Runnable {
 		lastSelectedButton = -1;
 		move.add(randomMove());
 		move.add(randomMove());
-		roundNumber = 0;
+		setRoundNumber(0);
 		viewObjects.add(progress);
 		viewObjects.add(text);
 	}
@@ -65,15 +66,136 @@ public class SimonScreenDanielE extends ClickableScreen implements Runnable {
 	*/
 	
 	private ProgressInterfaceDanielE getProgress() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	private void addButtons() {
-		int numberOfButtons = 0;
-		button = new ButtonInterfaceDanielE[numberOfButtons];
-		color = new Color[]
-				//Left off at Part 2 # 2
+		int numberOfButtons = 4;	
+		button = new ButtonInterfaceDanielE[numberOfButtons-1];
+		Color button1 = new Color(0,0,0);
+		Color button2 = new Color(45,54,120);
+		Color button3 = new Color(68,100,32);
+		Color button4 = new Color(32,32,32);
+		Color button5 = new Color(200,200,200);
+		Color button6 = new Color(144,23,43);
+		
+		for(int i = 0; i < numberOfButtons;i++)
+		{
+			final ButtonInterfaceDanielE b = getAButton();
+			button[i] = b;
+			  b.setColor(Color.blue); 
+			   b.setX(5);
+			   b.setY(8);
+			 
+			   b.setAction(new Action(){
+
+				   public void act(){
+					   if(acceptingInput)
+					   {
+						   Thread blink = new Thread(new Runnable(){
+
+							   public void run(){
+									b.highlight();
+									try {
+									Thread.sleep(800);
+									} catch (InterruptedException e) {
+									e.printStackTrace();
+									}
+									b.dim();
+							   }
+
+							   });
+						   blink.start();
+					   }
+				   }
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+
+				@Override
+				public void addPropertyChangeListener(PropertyChangeListener listener) {
+					// TODO Auto-generated method stub
+					
+				}
+
+				@Override
+				public Object getValue(String key) {
+					// TODO Auto-generated method stub
+					return null;
+				}
+
+				@Override
+				public boolean isEnabled() {
+					// TODO Auto-generated method stub
+					return false;
+				}
+
+				@Override
+				public void putValue(String key, Object value) {
+					// TODO Auto-generated method stub
+					
+				}
+
+				@Override
+				public void removePropertyChangeListener(PropertyChangeListener listener) {
+					// TODO Auto-generated method stub
+					
+				}
+
+				@Override
+				public void setEnabled(boolean b) {
+					// TODO Auto-generated method stub
+					
+				}
+
+				   });
+		
+			   if(b == move.get(sequenceIndex).getButton()) {
+				   sequenceIndex++;
+			   }
+			   else {
+				   progress.gameOver();
+			   }
+			   if(sequenceIndex == move.size()){ 
+				    Thread nextRound = new Thread(SimonScreenDanielE.this); 
+				    nextRound.start(); 
+			   }
+		}
+
+			   
 	}
+		private ButtonInterfaceDanielE getAButton() 
+		{
+			return null;
+			
+		}
+		@Override
+		public void run() {
+			text.setText("");
+		    nextRound();
+		}
+
+		private void nextRound() {
+			acceptingInput= false;
+			setRoundNumber(getRoundNumber() + 1);
+			randomMove();
+			
+		}
+
+
+
+		public int getRoundNumber() {
+			return roundNumber;
+		}
+
+
+
+		public void setRoundNumber(int roundNumber) {
+			this.roundNumber = roundNumber;
+		}		
+
 
 }
