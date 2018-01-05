@@ -5,12 +5,13 @@ import java.awt.Color;
 import guiTeacher.components.Action;
 import guiTeacher.interfaces.Clickable;
 
-public interface ButtonInterfaceDanielE extends Clickable {
+public interface ButtonInterfaceDanielE extends Clickable{
 
 	void setColor(Color blue);
-	void setAction(javax.swing.Action action);
+	void setAction(Action a);
+
 	void highlight();
 	void dim();
-
+	void getButton();
 
 }

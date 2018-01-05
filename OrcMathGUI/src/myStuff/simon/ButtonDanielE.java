@@ -1,13 +1,35 @@
 package myStuff.simon;
 
+import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
-import guiTeacher.interfaces.Visible;
+import guiTeacher.components.Action;
+import guiTeacher.components.Button;
 
-public class ProgressInterfaceDanielE implements Visible {
+public class ButtonDanielE extends Button implements ButtonInterfaceDanielE{
 
-	public ProgressInterfaceDanielE() {
+	public ButtonDanielE(int x, int y, int w, int h, String text, Action action) {
+		super(x, y, w, h, "", null);
 		// TODO Auto-generated constructor stub
+	}
+
+	@Override
+	public boolean isHovered(int x, int y) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void act() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void hoverAction() {
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
@@ -31,13 +53,13 @@ public class ProgressInterfaceDanielE implements Visible {
 	@Override
 	public void setX(int x) {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
 	public void setY(int y) {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
@@ -55,7 +77,7 @@ public class ProgressInterfaceDanielE implements Visible {
 	@Override
 	public void update() {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
@@ -67,7 +89,7 @@ public class ProgressInterfaceDanielE implements Visible {
 	@Override
 	public void setVisible(boolean b) {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
@@ -85,27 +107,48 @@ public class ProgressInterfaceDanielE implements Visible {
 	@Override
 	public void setAlpha(float f) {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
 	public void unhoverAction() {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
-	public void hoverAction() {
-		// TODO Auto-generated method stub
-
-	}
-
-
-
-
-	public void gameOver() {
+	public void setColor(Color blue) {
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public void setAction(Action a) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void highlight() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void dim() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void getButton() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	public void drawButton(Graphics2D g, boolean hover) {
+		
+	}
+	
 
 }
