@@ -12,6 +12,6 @@ public interface ButtonInterfaceDanielE extends Clickable{
 
 	void highlight();
 	void dim();
-	void getButton();
+	
 
 }

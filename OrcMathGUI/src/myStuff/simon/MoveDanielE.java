@@ -2,10 +2,15 @@ package myStuff.simon;
 
 public class MoveDanielE implements MoveInterfaceDanielE {
 
-	@Override
+	
+	ButtonInterfaceDanielE button;
+	
+	public MoveDanielE(ButtonInterfaceDanielE button) {
+		this.button = button;
+	}
+	
 	public ButtonInterfaceDanielE getButton() {
-		// TODO Auto-generated method stub
-		return null;
+		return button;
 	}
 
 }
