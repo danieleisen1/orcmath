@@ -150,7 +150,6 @@ public abstract class GUIApplication extends JFrame implements Runnable, Compone
 	@Override
 	public void componentHidden(ComponentEvent e) {
 		// TODO Auto-generated method stub
-		
 	}
 	
 }

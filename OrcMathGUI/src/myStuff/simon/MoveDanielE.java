@@ -13,4 +13,10 @@ public class MoveDanielE implements MoveInterfaceDanielE {
 		return button;
 	}
 
+	@Override
+	public ButtonInterfaceDanielE getTheButton() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

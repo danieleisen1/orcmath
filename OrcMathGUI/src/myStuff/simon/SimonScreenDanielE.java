@@ -1,193 +1,169 @@
 package myStuff.simon;
 
-import java.awt.Color;
 import java.util.ArrayList;
+import java.awt.Color;
 import java.util.List;
+
+
 
 import guiTeacher.components.Action;
 import guiTeacher.components.TextLabel;
 import guiTeacher.interfaces.Visible;
 import guiTeacher.userInterfaces.ClickableScreen;
 
-public class SimonScreenDanielE extends ClickableScreen implements Runnable{
+public class SimonScreenDanielE extends ClickableScreen implements Runnable {
 
-	private static final long serialVersionUID = 3565322860517751569L;
-	
+	public ArrayList<MoveInterfaceDanielE> array;
 	public ProgressInterfaceDanielE progress;
-	public ArrayList<MoveInterfaceDanielE> sequence;
 	
-	public int increment;
-	public TextLabel label;
-	public ButtonInterfaceDanielE[] buttons;
-	public int roundNumber;
-	public boolean acceptingInput;
-	public int sequenceIndex;
+	
+	public int roundNum;
+	public int sequenceLength;
+	public int sequenceWin;
+	public boolean input;
+	
+	
+	public ButtonInterfaceDanielE[] allButtons;
+	
+	public int oldButton;
 	Color[] colors;
-	public int lastSelectedButton;
 	
-	
+	public TextLabel displayRound;
 	public SimonScreenDanielE(int width, int height) {
 		super(width, height);
+		
+		
+		
 		Thread app = new Thread(this);
 		app.start();
 	}
-
-	@Override
-	public void initAllObjects(List<Visible> viewObjects) {
-		sequence = new ArrayList<MoveInterfaceDanielE>();
-		lastSelectedButton = -1;
-		
-		int numberOfButtons = 5;
-		buttons = new ButtonInterfaceDanielE[numberOfButtons];
-		colors = new Color[numberOfButtons];
-		colors[0] = Color.blue;
-		colors[1] = Color.red;
-		colors[2] = Color.green;
-		colors[3] = Color.yellow;
-		colors[4] = Color.orange;
-		
-		roundNumber = 0;
-		sequenceIndex = 0;
-		increment = 3;
-		acceptingInput = true;
-		
-		label = new TextLabel(70,100,300,40,"Let's play Simon!");
-		viewObjects.add(label);
-
-		
-
-		for(ButtonInterfaceDanielE b: buttons){ 
-		    viewObjects.add(b); 
-		}
-		progress = getProgress();
-		viewObjects.add(progress);
-		
-		
-	
-		for(int j = 0; j < buttons.length; j++) {
-			final ButtonInterfaceDanielE b = getButton(50,j*70+70,60,60);
-			buttons[j] = b;
-			b.setColor(colors[j]);
-			b.setAction(new Action(){
-				
-				public void act(){
-					if(acceptingInput) {
-						Thread blink = new Thread(new Runnable(){
-							public void run(){
-								b.highlight();
-								try {
-									Thread.sleep(800);
-								} catch (InterruptedException e) {
-									// TODO Auto-generated catch block
-									e.printStackTrace();
-								}
-								acceptingInput = true;
-								b.dim();
-							}
-						});
-						blink.start();
-						if(b == sequence.get(sequenceIndex).getButton()) {
-							sequenceIndex++;
-						}
-						else {
-							progress.lose();
-							acceptingInput = false;
-						}
-						if(sequenceIndex == sequence.size()){ 
-						    Thread nextRound = new Thread(SimonScreenDanielE.this); 
-						    nextRound.start(); 
-						}
-					}
-				}
-				
-			});
-			
-			progress = getProgress();
-			progress.setNum(roundNumber, increment);
-			sequence.add(randomMove());
-			sequence.add(randomMove());
-		}
-	}
-
-	public MoveInterfaceDanielE randomMove() {
-		int selectedButton = (int)(Math.random()*buttons.length);
-		while(selectedButton == lastSelectedButton) {
-			selectedButton = (int)(Math.random()*buttons.length);
-		}
-		lastSelectedButton = selectedButton;
-		return getMove(selectedButton);
-	}
-
-	private MoveInterfaceDanielE getMove(int selectedButton) {
-		return new MoveDanielE(buttons[selectedButton]);
-	}
-
-	/**
-	Placeholder until partner finishes implementation of ProgressInterface
-	*/
-	private ProgressInterfaceDanielE getProgress() { 
-	   return new ProgressDanielE();
-	}
-	
-	private ButtonInterfaceDanielE getButton(int x, int y, int w, int h) {
-		ButtonDanielE button = new ButtonDanielE(x,y,w,h,"", null);
-		return button;
-	}
-	
 	
 
-	@Override
 	public void run() {
-		label.setText("");
-	    nextRound();
-	}
-
-	private void nextRound() {
-		acceptingInput = false;
-		roundNumber++;
-		sequence.add(randomMove());
-		progress.setNum(roundNumber, sequence.size());
-		changeText("Simon's turn");
-		playSequence();
-		changeText("Your turn");
-		acceptingInput = true;
-		sequenceIndex = 0;
+		input = false;
+		sequenceWin++;
+		roundNum++;
+		array.add(getRandomMove());
+		progress.setNum(roundNum, array.size());
+		simonInput();
+		displayRound.setText("Your turn");
+		sequenceLength=0;
+		input = true;
+		
 	}
 	
-	public void changeText(String text) {
-		Thread changer = new Thread(new Runnable() {
-			
-			@Override
-			public void run() {
-				label.setText(text);
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				label.setText("");
-			}
-		});
-		changer.start();
-	}
-	
-	public void playSequence() {
+	public void simonInput(){
 		ButtonInterfaceDanielE b;
-		for(int i = 0; i < sequence.size(); i++) {
-			
-			b = sequence.get(i).getButton();
-			b.highlight();
-			int sleepTime = (int) Math.log(Math.pow(2, roundNumber)) + 3;
+		for(int i = 0; i < array.size(); i++) {
+			b = array.get(i).getTheButton();
+			b.setBright("bright");
 			try {
-				Thread.sleep(sleepTime);
+				Thread.sleep((int)(1000*roundNum));
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			b.dim();
+			b.setBright("dim");
 		}
 		
-	}  
+	}
+	
+	 
+	@Override
+	public void initAllObjects(List<Visible> viewObjects) {
+		array = new ArrayList<MoveInterfaceDanielE>();
+		oldButton = -1;
+		allButtons = new ButtonInterfaceDanielE[4];
+		colors = new Color[4];
+		colors[0] = Color.BLUE;
+		colors[1] = Color.YELLOW;
+		colors[2] = Color.RED;
+		colors[3] = Color.GREEN;
+	
+		roundNum = 0;
+		sequenceLength = 0;
+		sequenceWin= 3;
+		input = true;
+		
+		
+		displayRound = new TextLabel(50,30,200,100,"TIME TO PLAY SIMON FOLLOW MY STEPS!!");
+		viewObjects.add(displayRound);
+		
+		for (int i = 0;i <allButtons.length;i++) {
+			
+			final ButtonInterfaceDanielE button = getButton(50,i*70+70,60,60);
+			allButtons[i] = button;
+			button.setColor1(colors[i]);
+			button.setAction(new Action() {
+				
+				@Override
+				public void act() {
+					if (input) {
+						Thread light  = new Thread(new Runnable() {
+							
+							@Override
+							public void run() {
+								button.setBright("bright");
+								input = false;
+								try {
+									Thread.sleep(800);
+								}catch(InterruptedException e ) {
+									e.printStackTrace();
+								}
+								input = true;
+								button.setBright("dim");
+							}
+						});
+						light.start();
+						if(button == array.get(sequenceLength).getTheButton()) { // correct input
+							sequenceLength++;
+						} else{ // wrong input
+							progress.lose();
+							input = false;
+						}
+						if(sequenceLength == array.size()){ // got all correct
+						    Thread nextRound = new Thread(SimonScreenDanielE.this); 
+						    nextRound.start(); 
+						}
+					}
+					
+				}
+			});
+		}
+		
+		progress = getProgressBar();
+		progress.setNum(roundNum,sequenceWin);
+		array.add(getRandomMove());
+		array.add(getRandomMove());
+
+		for (int i = 0;i <allButtons.length;i++) {
+			System.out.println(allButtons[i]);
+			viewObjects.add(allButtons[i]);
+		}
+		viewObjects.add(progress);
+	}
+
+	private MoveInterfaceDanielE getRandomMove() {
+		int randomInt = (int)(Math.random()*allButtons.length);
+		while (randomInt == oldButton) {
+			randomInt = (int)(Math.random()*allButtons.length);
+		}
+		return new MoveDanielE(allButtons[randomInt]);
+	}
+
+
+	private ProgressInterfaceDanielE getProgressBar() {
+		return new ProgressDanielE();
+	}
+
+	
+
+
+	private ButtonInterfaceDanielE getButton(int x,int y,int w, int h) {
+		ButtonDanielE button = new ButtonDanielE(x,y,w,h,"",null);
+		return button;
+	}
+
+
 
 }
